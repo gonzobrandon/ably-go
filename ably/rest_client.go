@@ -3,6 +3,7 @@ package ably
 import (
 	"bytes"
 	_ "crypto/sha512"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -28,12 +29,13 @@ var (
 
 // constants for rsc7
 const (
-	AblyVersionHeader = "X-Ably-Version"
-	AblyLibHeader     = "X-Ably-Lib"
-	LibraryVersion    = "1.0"
-	LibraryName       = "ably-go"
-	LibraryString     = LibraryName + "-" + LibraryVersion
-	AblyVersion       = "1.0"
+	AblyVersionHeader  = "X-Ably-Version"
+	AblyLibHeader      = "X-Ably-Lib"
+	AblyClientIDHeader = "X-Ably-ClientId"
+	LibraryVersion     = "1.0"
+	LibraryName        = "ably-go"
+	LibraryString      = LibraryName + "-" + LibraryVersion
+	AblyVersion        = "1.0"
 )
 
 const HostHeader = "Host"
@@ -337,6 +339,11 @@ func (c *RestClient) NewHTTPRequest(r *Request) (*http.Request, error) {
 	req.Header.Set("Accept", proto)
 	req.Header.Set(AblyVersionHeader, AblyVersion)
 	req.Header.Set(AblyLibHeader, LibraryString)
+	if c.opts.ClientID != "" && c.Auth.method == authBasic {
+		// References RSA7e2
+		h := base64.StdEncoding.EncodeToString([]byte(c.opts.ClientID))
+		req.Header.Set(AblyClientIDHeader, h)
+	}
 	if !r.NoAuth {
 		if err := c.Auth.authReq(req); err != nil {
 			return nil, err
