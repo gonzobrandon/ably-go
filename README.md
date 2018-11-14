@@ -2,6 +2,32 @@
 
 A Go client library for [www.ably.io](https://ably.io), the realtime messaging service.
 
+## Feature support
+
+This library targets the Ably 1.1 client library specification.
+
+The 1.1 specification includes multiple new features, and this library implements a subset of those features as follows.
+
+| Feature | Spec reference | Supported |
+| --- | --- | --- |
+| Push notifications admin API | RSH1 | No |
+| Push notifications target API | RSH2 | No |
+| JWT authentication | multiple | No |
+| Idempotent REST publishing | RSL1j, RSL1k | Yes |
+| Fallback host affinity | RSC15f | Yes |
+| `ErrorInfo.href` help | TI4, TI5 | Yes |
+| request() enhancements | RSC19 | Yes |
+| Transient realtime publishing | RTL6c | No |
+| Exception reporting | RSC20 | No |
+
+The 1.1 specification also contains numerous spec clarifications, corrections and minor feature additions.
+Refer to [complete diff for the 1.1 specification](https://github.com/ably/docs/tree/master/content/client-lib-development-guide/versions/features-1-0__1-1.diff)
+for more details.
+
+It is intended that this library is upgraded incrementally, with 1.1 feature support expanded in successive minor
+releases. If there are features that are currently missing that are a high priority for your use-case then please
+[contact Ably customer support](https://support.ably.io). Pull Requests are also welcomed.
+
 ## Installation
 
 ```bash
